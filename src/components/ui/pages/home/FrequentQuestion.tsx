@@ -17,7 +17,7 @@ const FrequentQuestion = () => {
 
   return (
     <div className="my-24">
-      <h1 className="text-4xl md:text-5xl  mb-16 text-center font-bold text-primary-800">
+      <h1 className="text-3xl md:text-5xl   mb-16 text-center font-bold text-primary-800">
         Frequently Asked <br className="md:hidden block" /> Questions
       </h1>
 
@@ -32,7 +32,7 @@ const FrequentQuestion = () => {
               className="pt-2 cursor-pointer flex 
             justify-between   "
             >
-              <h1 className="pb-8  font-bold text-xl text-primary-800 w-[97%]">
+              <h1 className="md:pb-8 pb-5  font-bold text-base sm:text-xl text-primary-800 w-[97%]">
                 {item?.question}
               </h1>{" "}
               {item?.id === currentId ? (
@@ -48,7 +48,9 @@ const FrequentQuestion = () => {
               }`}
             >
               <div className="overflow-hidden">
-                <p className="smallDesc text-left pb-5">{item?.answer}</p>
+                <p className="smallDesc descriptionText text-left pb-5">
+                  {item?.answer}
+                </p>
               </div>
             </div>
           </div>

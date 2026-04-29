@@ -16,7 +16,7 @@ const WhyChoose = () => {
           <h2 className="text-2xl font-bold my-5 text-center">
             Trusted Expertise
           </h2>
-          <p className="text-center px-5">
+          <p className="text-center px-5 descriptionText">
             Benefit from our years of industry knowledge and professionalism,
             ensuring you make informed decisions every step of the way.
           </p>
@@ -37,7 +37,7 @@ const WhyChoose = () => {
           <h2 className="text-2xl font-bold my-5 text-center">
             Exceptional Selection
           </h2>
-          <p className="text-center px-5">
+          <p className="text-center px-5 descriptionText">
             Explore our vast array of top-quality vehicles from leading brands,
             meticulously curated to meet your diverse preferences and needs.
           </p>
@@ -59,7 +59,7 @@ const WhyChoose = () => {
           <h2 className="text-2xl font-bold my-5 text-center">
             Continued Support{" "}
           </h2>
-          <p className="text-center px-5">
+          <p className="text-center px-5 descriptionText">
             Experience peace of mind knowing our dedicated team will be by your
             side even after your purchase, providing ongoing assistance.
           </p>

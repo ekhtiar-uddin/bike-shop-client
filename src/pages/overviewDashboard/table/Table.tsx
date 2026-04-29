@@ -22,7 +22,7 @@ const List = ({ orders, orderIsLoading }) => {
         productName: order.products[0].productName,
         date: order.createdAt,
         amount: order.totalPrice,
-        paymentMethod: order.transaction.method,
+        paymentMethod: order?.transaction?.method,
         status: order.status,
       }))
       .slice(-5) || []; // Get the last 5 objects

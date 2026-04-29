@@ -10,11 +10,14 @@ type TInputProps = {
 
 const PHInput = ({ type, name, label, disabled }: TInputProps) => {
   return (
-    <div style={{ marginBottom: "20px" }}>
+    <div style={{ marginBottom: 16 }}>
       <Controller
         name={name}
         render={({ field }) => (
-          <Form.Item label={type === "checkbox" ? "" : label}>
+          <Form.Item
+            label={type === "checkbox" ? "" : label}
+            style={{ marginBottom: 0 }}
+          >
             {type === "date" ? (
               <DatePicker
                 style={{
@@ -23,6 +26,7 @@ const PHInput = ({ type, name, label, disabled }: TInputProps) => {
                 {...field}
                 size="large"
                 name="estimatedDeliveryDate"
+                placeholder={label}
               />
             ) : (
               <>
@@ -39,12 +43,13 @@ const PHInput = ({ type, name, label, disabled }: TInputProps) => {
                 {(name === "description" || name === "photoURL") && (
                   <Input.TextArea
                     style={{
-                      height: "80px",
+                      height: 96,
                     }}
                     {...field}
                     id={name}
                     size="large"
                     disabled={disabled}
+                    placeholder={label}
                   />
                 )}
                 {name !== "inStock" &&
@@ -56,6 +61,7 @@ const PHInput = ({ type, name, label, disabled }: TInputProps) => {
                       id={name}
                       size="large"
                       disabled={disabled}
+                      placeholder={label}
                     />
                   )}
               </>

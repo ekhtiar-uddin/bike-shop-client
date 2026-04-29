@@ -34,7 +34,7 @@ const DashboardUserProfile = () => {
     undefined,
     {
       refetchOnMountOrArgChange: true,
-    }
+    },
   );
   const [updateUserProfile] = useUpdateUserProfileMutation();
 
@@ -53,7 +53,7 @@ const DashboardUserProfile = () => {
   const customerExpenseData = orders?.data?.customerExpenseData;
 
   const expenseData = customerExpenseData?.find(
-    (item) => item.userId === user._id
+    (item) => item.userId === user._id,
   );
 
   const handleUpdateProfileModal = (userId) => {
@@ -77,7 +77,7 @@ const DashboardUserProfile = () => {
       if (file) {
         const uploadRes = await axios.post(
           "https://api.cloudinary.com/v1_1/dofbykuhh/image/upload",
-          formData
+          formData,
         );
         imageUrl = uploadRes.data.url;
       }

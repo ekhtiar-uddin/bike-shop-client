@@ -7,7 +7,7 @@ import Group from "/assets/Group.png";
 const Testimonials = () => {
   const [currentId, setCurrentId] = useState(1);
   const currectReview = testimonials.find(
-    (testimonial) => testimonial.id === currentId
+    (testimonial) => testimonial.id === currentId,
   );
 
   const { image, name, address, review } = currectReview;
@@ -43,7 +43,7 @@ const Testimonials = () => {
           <div className="relative flex-1 bg-p1 h-[335px] lg:h-full addFlex ">
             <div className="h-[285px] lg:h-[411px] w-[280px] lg:w-[386px] addFlexBetween flex-col">
               <div>
-                <p className="subTitle ">{review}</p>
+                <p className="subTitle md:text-lg text-sm">{review}</p>
               </div>
 
               <div className="relative border-b  border-white pb-4  addFlexBetween w-full">

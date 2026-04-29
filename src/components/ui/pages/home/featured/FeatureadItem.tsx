@@ -1,42 +1,59 @@
 import { Link } from "react-router-dom";
 
-const FeatureadItem = ({ item }) => {
-  const {
-    brand,
-    category,
-    createdAt,
-    description,
-    inStock,
-    model,
-    name,
-    photoURL,
-    price,
-    quantity,
-    updatedAt,
-    _id,
-  } = item;
+type TFeaturedItem = {
+  _id: string;
+  name: string;
+  photoURL: string;
+  price: number | string;
+  brand?: string;
+  category?: string;
+  model?: string;
+};
+
+const FeatureadItem = ({ item }: { item: TFeaturedItem }) => {
+  const { brand, category, model, name, photoURL, price, _id } = item;
 
   return (
-    <Link to={`/details/${_id}`}>
-      <div className="border border-[#D9D9D9] rounded-xl p-4">
-        <img className="rounded-xl w-full h-[220px]" src={photoURL} alt="" />
-
-        <div className="flex justify-center  gap-5 my-2">
-          <span className="sm:px-3 sm:py-1.5 px-4 py-2  2sm:px-4 2sm:py-2 bg-[#e1f3e1] rounded-full text-[12px]">
-            {brand}
-          </span>
-          <span className="bg-[#e1f3e1] sm:px-3 px-4 py-2 sm:py-1.5 2sm:px-4 2sm:py-2  rounded-full text-[12px]">
-            {category}
-          </span>
-          <span className="bg-[#e1f3e1] sm:px-3 px-4 py-2 sm:py-1.5 2sm:px-4 2sm:py-2 rounded-full text-[12px]">
-            {model}
-          </span>
+    <Link to={`/details/${_id}`} className="block h-full">
+      <div className="group flex h-full flex-col rounded-2xl border border-border bg-card p-3 transition hover:shadow-sm md:p-3">
+        <div className="rounded-xl border border-border bg-muted/40 p-4">
+          <div className="h-[200px] w-full">
+            <img
+              className="h-full w-full object-contain transition duration-300 group-hover:scale-[1.01]"
+              src={photoURL}
+              alt={name}
+              loading="lazy"
+            />
+          </div>
         </div>
 
-        <h1 className="mt-3 text-[25px] font-bold text-center">{name}</h1>
-        <p className="text-p1 text-[20px] font-semibold text-center">
-          ${price}
-        </p>
+        <div className="mt-4 flex flex-wrap justify-center gap-2">
+          {brand ? (
+            <span className="rounded-full border border-border bg-background px-3 py-1 text-[11px] font-medium text-muted-foreground">
+              {brand}
+            </span>
+          ) : null}
+          {category ? (
+            <span className="rounded-full border border-border bg-background px-3 py-1 text-[11px] font-medium text-muted-foreground">
+              {category}
+            </span>
+          ) : null}
+          {model ? (
+            <span className="rounded-full border border-border bg-background px-3 py-1 text-[11px] font-medium text-muted-foreground">
+              {model}
+            </span>
+          ) : null}
+        </div>
+
+        <h1 className="mt-4 line-clamp-2 text-center text-lg font-semibold leading-snug text-foreground md:text-xl">
+          {name}
+        </h1>
+
+        <div className="mt-2 flex items-center justify-center">
+          <p className="text-base font-semibold text-foreground md:text-lg">
+            ${price}
+          </p>
+        </div>
       </div>
     </Link>
   );

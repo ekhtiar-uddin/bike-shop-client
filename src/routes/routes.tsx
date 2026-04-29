@@ -7,7 +7,8 @@ import BikeDetails from "../components/ui/pages/bikeDetails/BikeDetails";
 import Checkout from "../components/ui/pages/checkout/Checkout";
 import ErrorPage from "../components/ui/pages/error/Errorpage";
 import Homepage from "../components/ui/pages/home/Homepage";
-import OrderVerification from "../components/ui/pages/verifyOrder/Verifyorder";
+import ResponseRedirect from "../components/ui/pages/verifyOrder/ResponseRedirect";
+import OrderVerification from "../components/ui/pages/verifyOrder/VerifyOrder";
 import ChangePassword from "../pages/customer/ChangePassword";
 
 import About from "../components/ui/pages/about/About";
@@ -51,6 +52,10 @@ const router = createBrowserRouter([
       {
         path: "/order/verify",
         element: <OrderVerification />,
+      },
+      {
+        path: "/response",
+        element: <ResponseRedirect />,
       },
       {
         path: "/login",

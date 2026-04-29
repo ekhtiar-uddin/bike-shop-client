@@ -16,10 +16,10 @@ import logoWhite from "/public/assets/logo-white.png";
 
 const Footer = () => {
   return (
-    <footer className=" bg-gray-900 text-white py-14 lg:py-20  md:h-[130vh] lg:h-[95vh] 2xl:h-[60vh] flex items-center justify-center  font-Inter ">
+    <footer className="bg-gray-900 text-white py-10 2xs:py-14 lg:py-20 lg:h-[95vh] 2xl:h-[60vh] flex items-start justify-start lg:items-center lg:justify-center font-Inter">
       <section>
-        <div className="customWidth flex lg:gap-12 xl:gap-32  2xl:gap-16 lg:flex-row   flex-col-reverse  gap-14">
-          <div className="flex justify-center">
+        <div className="customWidth flex lg:gap-12 xl:gap-32 2xl:gap-16 lg:flex-row flex-col-reverse gap-10 2xs:gap-14">
+          <div className="flex justify-start lg:justify-center">
             <div>
               <div className="flex items-center gap-2 mb-6 xl:mb-10">
                 <img className="w-[50px] lg:w-[50px]" src={logoWhite}></img>
@@ -30,26 +30,26 @@ const Footer = () => {
               </div>
 
               <h2 className="font-Inter font-bold mb-2 ">Connect us on</h2>
-              <ul className="flex gap-8 ">
+              <ul className="flex flex-wrap gap-4 2xs:gap-6 md:gap-8">
                 <a href="https:/facebook.com">
                   {" "}
-                  <FaFacebook className="text-3xl"></FaFacebook>{" "}
+                  <FaFacebook className="text-2xl 2xs:text-3xl"></FaFacebook>{" "}
                 </a>
                 <a href="https:/instagram.com">
                   {" "}
-                  <FaInstagramSquare className="text-3xl"></FaInstagramSquare>{" "}
+                  <FaInstagramSquare className="text-2xl 2xs:text-3xl"></FaInstagramSquare>{" "}
                 </a>
                 <a href="https:/twitter.com">
                   {" "}
-                  <FaTwitterSquare className="text-3xl"></FaTwitterSquare>{" "}
+                  <FaTwitterSquare className="text-2xl 2xs:text-3xl"></FaTwitterSquare>{" "}
                 </a>
                 <a href="https:/linkedin.com">
                   {" "}
-                  <FaLinkedin className="text-3xl"></FaLinkedin>{" "}
+                  <FaLinkedin className="text-2xl 2xs:text-3xl"></FaLinkedin>{" "}
                 </a>
                 <a href="https:/youtube.com">
                   {" "}
-                  <FaYoutube className="text-3xl"></FaYoutube>{" "}
+                  <FaYoutube className="text-2xl 2xs:text-3xl"></FaYoutube>{" "}
                 </a>
               </ul>
               <ul className="flex flex-col gap-1 mt-7 ">
@@ -71,11 +71,8 @@ const Footer = () => {
             </div>
           </div>
           {/* RIGHT SIDE FOR SMALL DEVICE  */}
-          <section className="flex  2xl:flex-row 2xl:gap-0 gap-10  flex-col-reverse flex-1  2xl:justify-between  ">
-            <div
-              className="flex   
-            justify-between   2xl:w-[400px] w-full sm:gap-0 gap-10"
-            >
+          <section className="flex 2xl:flex-row 2xl:gap-0 gap-10 flex-col-reverse flex-1 2xl:justify-between">
+            <div className="flex flex-col sm:flex-row justify-between 2xl:w-[400px] w-full sm:gap-0 gap-10">
               <div className=" w-[240px] sm:w-auto">
                 <h2 className="font-bold mb-3 ">About Bike Bari</h2>
                 <ul className="text-footerGray space-y-2">
@@ -103,7 +100,7 @@ const Footer = () => {
                 </ul>
               </div>
             </div>
-            <div className="flex  justify-between 2sm:gap-32 gap-8   ">
+            <div className="flex flex-col md:flex-row justify-between 2sm:gap-32 gap-8">
               <div className=" w-[240px] sm:w-auto">
                 <h2 className="font-bold mb-3 ">Popular Bikes</h2>
                 <ul className="text-footerGray space-y-2">
@@ -116,10 +113,13 @@ const Footer = () => {
                 </ul>
               </div>
 
-              <div className=" 2xl:w-[400px]  w-[400px] ">
+              <div className="2xl:w-[400px] w-full md:w-[400px]">
                 <h2 className="font-bold text-xl">Subscribe</h2>
                 <p className="my-4 text-footerGray">
-                  Stay informed about new bike arrivals, exclusive deals <br />{" "}
+                  Stay informed about new bike arrivals, exclusive deals
+                  <span className="hidden sm:inline">
+                    <br />
+                  </span>{" "}
                   and exciting offers.
                 </p>
                 <div>
@@ -152,7 +152,7 @@ const Footer = () => {
             </p>
           </div>
 
-          <div className="flex items-center gap-3 ">
+          <div className="flex flex-wrap md:flex-nowrap items-center justify-center md:justify-end gap-3">
             <img src={brandOne} alt="" />
             <img src={brandTwo} alt="" />
             <img src={brandThree} alt="" />

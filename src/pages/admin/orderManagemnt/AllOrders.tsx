@@ -1,5 +1,8 @@
+import { Col, Flex } from "antd";
 import { Pencil, Trash } from "lucide-react";
 import { useState } from "react";
+import { FieldValues, SubmitHandler } from "react-hook-form";
+import { toast } from "sonner";
 import PHForm from "../../../components/form/PHForm";
 import PHInput from "../../../components/form/PHInput";
 import PHSelect from "../../../components/form/PHSelect";
@@ -12,19 +15,23 @@ import {
 } from "../../../components/reusable/card";
 import Skeleton from "../../../components/Skeleton/Skeleton";
 import Modal from "../../../components/ui/pages/checkout/modal/Modal";
-import { selectCurrentUser } from "../../../redux/features/auth/authSlice";
-
-import { Col, Flex } from "antd";
-import { FieldValues, SubmitHandler } from "react-hook-form";
-import { toast } from "sonner";
 import { statusesOptions } from "../../../constants/global";
 import {
   useDeleteOrderMutation,
   useGetOrdersQuery,
   useUpdateOrderMutation,
 } from "../../../redux/features/admin/orderManagement.api";
-import { useAppSelector } from "../../../redux/hooks";
 import { TOrdersData } from "../../../types/orderManagement.type";
+
+type OrderWithEstimatedDeliveryDate = TOrdersData & {
+  estimatedDeliveryDate?: string;
+};
+
+type MutationErrorShape = {
+  data?: {
+    message?: string;
+  };
+};
 
 export interface Transaction {
   id: string;
@@ -56,14 +63,13 @@ export interface Order {
 
 export default function AllOrders() {
   const [orderId, setOrderId] = useState("");
-  const [defaultValues, setDefaultValues] = useState({});
   const [openUpdate, setOpenUpdate] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
-  const user = useAppSelector(selectCurrentUser);
   const { isLoading, data: orders } = useGetOrdersQuery(undefined, {
     refetchOnMountOrArgChange: true,
   });
-  const orderData: TOrdersData[] = orders?.data?.ordersData;
+  const orderData: OrderWithEstimatedDeliveryDate[] =
+    (orders?.data?.ordersData as OrderWithEstimatedDeliveryDate[]) || [];
 
   const [deleteOrder] = useDeleteOrderMutation();
   const [updateOrder] = useUpdateOrderMutation();
@@ -79,12 +85,13 @@ export default function AllOrders() {
     try {
       const res = await deleteOrder(deleteData);
       if (res.error) {
-        toast.error(res.error.data.message, { id: toastId });
+        const message = (res.error as MutationErrorShape)?.data?.message;
+        toast.error(message || "Something went wrong", { id: toastId });
       } else {
         toast.success("Product Deleted", { id: toastId });
         setOpenDelete(false);
       }
-    } catch (err) {
+    } catch {
       toast.error("Something went wrong", { id: toastId });
     }
   };
@@ -107,7 +114,7 @@ export default function AllOrders() {
       data: {
         status: data.status,
         estimatedDeliveryDate: data.estimatedDeliveryDate.format(
-          "M/D/YYYY, h:mm:ss A"
+          "M/D/YYYY, h:mm:ss A",
         ),
       },
     };
@@ -118,13 +125,14 @@ export default function AllOrders() {
       const res = await updateOrder(updateData);
       if (res.error) {
         console.log(res.error);
-        toast.error(res.error.data.message, { id: toastId });
+        const message = (res.error as MutationErrorShape)?.data?.message;
+        toast.error(message || "Something went wrong", { id: toastId });
       } else {
         console.log("here", res);
         toast.success("Product Updated", { id: toastId });
         // setOpen(false);
       }
-    } catch (err) {
+    } catch {
       toast.error("Something went wrong", { id: toastId });
     }
   };
@@ -132,120 +140,163 @@ export default function AllOrders() {
   return isLoading ? (
     <Skeleton />
   ) : (
-    <div className="container mx-auto p-4">
-      <h1 className="text-3xl font-bold mb-6">All Orders</h1>
-      <div className="grid gap-6 md:grid-cols-2">
+    <div className="mx-auto w-full max-w-6xl px-4 py-6 md:px-8">
+      <div className="mb-6">
+        <h1 className="text-xl font-semibold text-foreground md:text-2xl">
+          All Orders
+        </h1>
+        <p className="mt-1 text-sm text-muted-foreground">
+          Manage order statuses, delivery estimates, and customer purchases.
+        </p>
+      </div>
+
+      <div className="grid gap-4 md:grid-cols-2">
         {orderData?.map((order) => (
-          <Card key={order._id}>
-            <CardContent>
-              <dl className="grid grid-cols-2 gap-2 p-4">
-                <dt className="font-semibold">Order ID:</dt>
-                <dd>{order._id}</dd>
-                <dt className="font-semibold">Total Price:</dt>
-                <dd>${order.totalPrice?.toFixed(2)}</dd>
-                <dt className="font-semibold">Status:</dt>
-                <dd>
-                  <Badge
-                    variant={
-                      order?.status === "Pending" ? "outline" : "default"
-                    }
-                  >
-                    {order?.status}
-                  </Badge>
-                </dd>
-                <dt className="font-semibold">Created At:</dt>
-                <dd>{new Date(order.createdAt).toLocaleString()}</dd>
-                <dt className="font-semibold">Est. Delivery Date:</dt>
-                <dd>
-                  {order.estimatedDeliveryDate
-                    ? new Date(order.estimatedDeliveryDate).toLocaleString()
-                    : "Not Updated"}
-                </dd>
-              </dl>
+          <Card key={order._id} className="border border-border bg-card">
+            <CardContent className="p-4 md:p-5">
+              <div className="flex items-start justify-between gap-4">
+                <div className="min-w-0">
+                  <p className="text-sm font-medium text-foreground">Order</p>
+                  <p className="mt-0.5 truncate text-xs text-muted-foreground">
+                    {order._id}
+                  </p>
+                </div>
+                <Badge
+                  variant={order?.status === "Pending" ? "outline" : "default"}
+                >
+                  {order?.status}
+                </Badge>
+              </div>
+
+              <div className="mt-4 grid grid-cols-1 gap-3 text-sm">
+                <div className="flex items-center justify-between gap-4 rounded-md border border-border/60 bg-background/40 px-3 py-2">
+                  <span className="text-muted-foreground">Total price</span>
+                  <span className="font-medium text-foreground">
+                    ${order.totalPrice?.toFixed(2)}
+                  </span>
+                </div>
+
+                <div className="flex items-center justify-between gap-4 rounded-md border border-border/60 bg-background/40 px-3 py-2">
+                  <span className="text-muted-foreground">Created</span>
+                  <span className="font-medium text-foreground">
+                    {new Date(order.createdAt).toLocaleString()}
+                  </span>
+                </div>
+
+                <div className="flex items-center justify-between gap-4 rounded-md border border-border/60 bg-background/40 px-3 py-2">
+                  <span className="text-muted-foreground">Est. delivery</span>
+                  <span className="font-medium text-foreground">
+                    {order.estimatedDeliveryDate
+                      ? new Date(order.estimatedDeliveryDate).toLocaleString()
+                      : "Not Updated"}
+                  </span>
+                </div>
+              </div>
             </CardContent>
-            <CardFooter>
-              <div className="flex gap-4">
+
+            <CardFooter className="flex flex-col items-stretch gap-4 p-4 pt-0 md:p-5 md:pt-0">
+              <div className="flex flex-wrap items-center gap-3">
                 <Button
                   variant="dashboardTwo"
-                  className="px-5 py-2 rounded"
+                  className="rounded px-5 py-2"
                   onClick={() => handleUpdateOrder(order._id)}
                 >
                   Update
                 </Button>
-                <Modal open={openUpdate} onClose={() => setOpenUpdate(false)}>
-                  <div className="text-center ">
-                    <Pencil size={26} className="mx-auto text-red-500" />
-
-                    <div className="mx-auto my-2 w-[400px]">
-                      <h3 className="text-lg font-black text-gray-800">
-                        Update Order
-                      </h3>
+                <Modal
+                  open={openUpdate && orderId === order._id}
+                  onClose={() => setOpenUpdate(false)}
+                >
+                  <div className="w-[92vw] max-w-[520px]">
+                    <div className="flex items-start gap-3">
+                      <div className="mt-0.5 rounded-md border border-border bg-background p-2">
+                        <Pencil size={18} className="text-red-500" />
+                      </div>
+                      <div className="min-w-0">
+                        <h3 className="text-base font-semibold text-foreground">
+                          Update Order
+                        </h3>
+                        <p className="mt-1 text-sm text-muted-foreground">
+                          Change order status and estimated delivery date.
+                        </p>
+                      </div>
                     </div>
 
-                    <Flex justify="center" align="center">
-                      <Col span={24}>
-                        {" "}
-                        {/* Expand to full width */}
-                        <PHForm onSubmit={onSubmit}>
-                          <PHSelect
-                            label="Status"
-                            name="status"
-                            options={statusesOptions}
-                          />
+                    <div className="mt-5">
+                      <Flex justify="center" align="center">
+                        <Col span={24}>
+                          <PHForm onSubmit={onSubmit}>
+                            <PHSelect
+                              label="Status"
+                              name="status"
+                              options={statusesOptions}
+                            />
 
-                          <PHInput
-                            type="date"
-                            label="Estimated Delivery Date"
-                            name="estimatedDeliveryDate"
-                          />
-                          <div className="flex justify-center gap-4 ">
-                            <button
-                              type="submit"
-                              className="btn btn-light  px-7"
-                              onClick={() => setOpenUpdate(false)}
-                            >
-                              Update
-                            </button>
-                            <button
-                              type="button"
-                              className="btn btn-light  px-7"
-                              onClick={() => setOpenUpdate(false)}
-                            >
-                              Cancel
-                            </button>
-                          </div>
-                        </PHForm>
-                      </Col>
-                    </Flex>
+                            <PHInput
+                              type="date"
+                              label="Estimated Delivery Date"
+                              name="estimatedDeliveryDate"
+                            />
+                            <div className="mt-2 flex justify-end gap-3">
+                              <button
+                                type="submit"
+                                className="btn btn-light px-7"
+                                onClick={() => setOpenUpdate(false)}
+                              >
+                                Update
+                              </button>
+                              <button
+                                type="button"
+                                className="btn btn-light px-7"
+                                onClick={() => setOpenUpdate(false)}
+                              >
+                                Cancel
+                              </button>
+                            </div>
+                          </PHForm>
+                        </Col>
+                      </Flex>
+                    </div>
                   </div>
                 </Modal>
                 <Button
                   variant="dashboardOne"
-                  className="px-5 py-2 rounded"
-                  onClick={() => setOpenDelete(true)}
+                  className="rounded px-5 py-2"
+                  onClick={() => {
+                    setOrderId(order._id);
+                    setOpenDelete(true);
+                  }}
                 >
                   Delete
                 </Button>
-                <Modal open={openDelete} onClose={() => setOpenDelete(false)}>
-                  <div className="text-center ">
-                    <Trash size={56} className="mx-auto text-red-500" />
-                    <div className="mx-auto my-4 w-[400px]">
-                      <h3 className="text-lg font-black text-gray-800">
-                        Confirm Delete
-                      </h3>
-                      <p className="text-sm text-gray-500">
-                        Are you sure you want to delete this order?
-                      </p>
+                <Modal
+                  open={openDelete && orderId === order._id}
+                  onClose={() => setOpenDelete(false)}
+                >
+                  <div className="w-[92vw] max-w-[520px]">
+                    <div className="flex items-start gap-3">
+                      <div className="mt-0.5 rounded-md border border-border bg-background p-2">
+                        <Trash size={18} className="text-red-500" />
+                      </div>
+                      <div className="min-w-0">
+                        <h3 className="text-base font-semibold text-foreground">
+                          Confirm delete
+                        </h3>
+                        <p className="mt-1 text-sm text-muted-foreground">
+                          Are you sure you want to delete this order?
+                        </p>
+                      </div>
                     </div>
-                    <div className="flex justify-center gap-4 ">
+
+                    <div className="mt-5 flex justify-end gap-3">
                       <button
                         onClick={() => handleDeleteOrder(order._id)}
-                        className="btn btn-danger px-7 "
+                        className="btn btn-danger px-7"
                       >
                         Delete
                       </button>
                       <button
-                        className="btn btn-light  px-7"
+                        className="btn btn-light px-7"
                         onClick={() => setOpenDelete(false)}
                       >
                         Cancel
@@ -255,14 +306,24 @@ export default function AllOrders() {
                 </Modal>
               </div>
 
-              <ul className="ml-5">
-                {order?.products?.map((product, i) => (
-                  <li key={i}>
-                    Product ID: {product?.product}, Quantity:{" "}
-                    {product?.quantity}
-                  </li>
-                ))}
-              </ul>
+              <div className="rounded-md border border-border/60 bg-background/40 p-3">
+                <p className="text-sm font-medium text-foreground">Products</p>
+                <ul className="mt-2 space-y-2 text-sm">
+                  {order?.products?.map((product, i) => (
+                    <li
+                      key={i}
+                      className="flex items-center justify-between gap-4 rounded-md border border-border bg-card px-3 py-2"
+                    >
+                      <span className="truncate text-muted-foreground">
+                        {product?.product}
+                      </span>
+                      <span className="font-medium text-foreground">
+                        x{product?.quantity}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </CardFooter>
           </Card>
         ))}

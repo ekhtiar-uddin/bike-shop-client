@@ -2,6 +2,7 @@ import { Layout, Menu } from "antd";
 import { TUser, useCurrentToken } from "../../redux/features/auth/authSlice";
 import { useAppSelector } from "../../redux/hooks";
 
+import { Link } from "react-router-dom";
 import { adminPaths } from "../../routes/admin.routes";
 import { customerPaths } from "../../routes/customer.routes";
 import { sidebarItemsGenerator } from "../../utils/sidebarItemsGenerator";
@@ -48,16 +49,19 @@ const Sidebar = () => {
           alignItems: "center",
         }}
       >
-        <div className="flex items-center gap-2">
-          <img
-            className="w-[50px] lg:w-[50px]"
-            src="https://i.ibb.co.com/tMxXTP6M/download-1.png"
-          ></img>
-          <h2 className="text-xl hidden lg:block font-extrabold font-Inter">
-            {" "}
-            BikeBari
-          </h2>
-        </div>
+        <Link to="/">
+          <div className="flex items-center gap-2">
+            <img
+              className="w-[50px] lg:w-[50px]"
+              src="https://i.ibb.co.com/tMxXTP6M/download-1.png"
+            ></img>
+
+            <h2 className="text-white text-xl hidden lg:block font-extrabold font-Inter">
+              {" "}
+              BikeBari
+            </h2>
+          </div>
+        </Link>
       </div>
       <Menu
         theme="light"

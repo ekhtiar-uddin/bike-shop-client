@@ -49,7 +49,7 @@ const baseQueryWithRefreshToken: BaseQueryFn<
       {
         method: "POST",
         credentials: "include",
-      }
+      },
     );
 
     const data = await res.json();
@@ -62,7 +62,7 @@ const baseQueryWithRefreshToken: BaseQueryFn<
         setUser({
           user,
           token: data.data.accessToken,
-        })
+        }),
       );
       result = await baseQuery(args, api, extraOptions);
     } else {

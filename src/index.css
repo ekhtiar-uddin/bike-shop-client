@@ -19,6 +19,7 @@
   --breakpoint-md: 768px;
   --breakpoint-2md: 832px;
   --breakpoint-lg: 1024px;
+  --breakpoint-cw: 1480px;
   --breakpoint-2lg: 1120px;
   --breakpoint-xl: 1280px;
   --breakpoint-2xl: 1536px;
@@ -125,8 +126,16 @@
     @apply w-[80%] mx-auto;
   } */
 
-  .customWidth {
+  /* .customWidth {
     @apply 2xl:w-[1475px] xl:w-[1190px] 2lg:w-[1080px] lg:w-[980px] md:w-[704px] 2sm:w-[660px] sm:w-[600px]  w-[350px] xs:w-[410px] 2xs:w-[380px] 3xs:w-[320px]  mx-auto;
+  } */
+
+  .descriptionText {
+    @apply lg:text-base text-sm text-[#737373];
+  }
+
+  .customWidth {
+    @apply max-w-370 mx-auto cw:px-2 md:px-5 px-3;
   }
 
   .credentialBtn {
@@ -185,7 +194,8 @@ body {
 
 .detailsBg {
   border-radius: 10px;
-  background: linear-gradient(90deg, #151515 0%, rgba(21, 21, 21, 0) 100%),
+  background:
+    linear-gradient(90deg, #151515 0%, rgba(21, 21, 21, 0) 100%),
     url("https://asset.scott-sports.com/sco/sco-bike-wide-banner-patron-021224_2195388.jpg?signature=c656917f811cd8e7587c9b95ea38b54357c56e5ad21d287a613676567d316afe");
   background-position: right 0px; /* Ensures the right side is prioritized */
   background-size: cover;

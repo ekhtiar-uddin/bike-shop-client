@@ -1,7 +1,6 @@
 import { AlertCircle, CheckCircle } from "lucide-react";
 
-import { Link, useSearchParams } from "react-router";
-
+import { Link, useSearchParams } from "react-router-dom";
 import { useVerifyOrderQuery } from "../../../../redux/features/admin/orderManagement.api";
 import Skeleton from "../../../Skeleton/Skeleton";
 import { Badge } from "../../../reusable/badge";
@@ -55,15 +54,17 @@ export default function OrderVerification() {
     searchParams.get("order_id"),
     {
       refetchOnMountOrArgChange: true,
-    }
+    },
   );
 
   const orderData: OrderData = data?.data?.[0];
 
+  console.log("orderData sdfsd", orderData);
+
   return isLoading ? (
     <Skeleton />
   ) : (
-    <div className="container  mx-auto p-4 my-10">
+    <div className=" customWidth  mx-auto p-4 my-10">
       <h1 className="text-3xl font-bold mb-6">Order Verification</h1>
       <div className="grid gap-6 md:grid-cols-2">
         <Card>
@@ -76,7 +77,7 @@ export default function OrderVerification() {
               <dd>{orderData?.order_id}</dd>
               <dt className="font-semibold">Amount:</dt>
               <dd>
-                {orderData?.currency} {orderData?.amount?.toFixed(2)}
+                {orderData?.currency} {Number(orderData?.amount)?.toFixed(2)}
               </dd>
               <dt className="font-semibold">Status:</dt>
               <dd>

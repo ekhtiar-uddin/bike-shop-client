@@ -1,7 +1,7 @@
 const Skeleton = () => {
   return (
     <>
-      <div className="bg-white p-4 rounded-lg">
+      <div className="bg-white p-4 rounded-lg customWidth">
         <div className="animate-pulse">
           <div className="h-48 bg-gray-300 rounded-lg mb-4"></div>
           <div className="h-6 bg-gray-300 rounded mb-2 w-3/4"></div>

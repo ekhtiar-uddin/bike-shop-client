@@ -36,7 +36,14 @@ const PHForm = ({
   // const { register, reset, handleSubmit } = methods {methods is an object containg all function }
   return (
     <FormProvider {...methods}>
-      <Form layout="vertical" onFinish={methods.handleSubmit(onSubmit)}>
+      <Form
+        layout="vertical"
+        requiredMark={false}
+        onFinish={methods.handleSubmit(onSubmit)}
+        style={{
+          width: "100%",
+        }}
+      >
         {children}
       </Form>
     </FormProvider>

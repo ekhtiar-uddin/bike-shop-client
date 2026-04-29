@@ -64,6 +64,9 @@ const Checkout = () => {
   };
 
   const handlePlaceOrder = async () => {
+    console.log("order placedsdf", {
+      products: [{ product: _id, quantity: count }],
+    });
     await createOrder({ products: [{ product: _id, quantity: count }] });
   };
 

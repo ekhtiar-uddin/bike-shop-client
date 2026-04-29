@@ -38,6 +38,12 @@ const PHSelect = ({
             options={options}
             size="large"
             disabled={disabled}
+            placeholder={label}
+            getPopupContainer={(triggerNode) =>
+              triggerNode?.parentElement || document.body
+            }
+            listHeight={240}
+            dropdownStyle={{ maxHeight: 240, overflow: "auto" }}
           />
           {error && <small style={{ color: "red" }}>{error.message}</small>}
         </Form.Item>
